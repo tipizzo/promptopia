@@ -34,7 +34,7 @@ const handler = NextAuth({
             // Check if a user already exists
             const userExists = await User.findOne({
                 email: profile.email
-            })
+            });
             // if not, create a new user
             if(!userExists) {
                 await User.create({
