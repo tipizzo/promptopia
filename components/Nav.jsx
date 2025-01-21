@@ -35,7 +35,7 @@ const Nav = () => {
                 <p className='logo_text'>Promptopia</p>
             </Link>
 
-            {alert(providers) }
+            
 
             {/* Desktop navigation */}
             <div className='sm:flex hidden'>
@@ -54,7 +54,7 @@ const Nav = () => {
 
                         <Link href="/profile">
                             <Image
-                                src="/assets/images/logo.svg"
+                                src={session?.user.image}
                                 width={37}
                                 height={37}
                                 className="rounded-full"
@@ -70,7 +70,7 @@ const Nav = () => {
                                 onClick={() => signIn(provider.id)}
                                 className='black_btn'
                             >
-
+                                Sign In
                             </button>
                         ))}
                     </>
@@ -82,7 +82,7 @@ const Nav = () => {
                 {session?.user ? (
                     <div>
                         <Image
-                            src="/assets/images/logo.svg"
+                            src={session?.user.image}
                             width={37}
                             height={37}
                             className="rounded-full"
