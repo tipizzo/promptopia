@@ -1,4 +1,5 @@
 import Feed from '@components/Feed'
+import PromptCard from '@components/PromptCard'
 
 const Home = () => {
   return (
