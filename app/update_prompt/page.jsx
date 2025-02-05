@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation'
 
 import Form from '@components/Form';
@@ -11,6 +11,7 @@ const EditPrompt = () => {
 
     const searchParams = useSearchParams();
     const promptId = searchParams.get('id');
+    console.log("Prompt ID:", promptId)
 
     const [submitting, setSubmitting] = useState(false);
     const [post, setPost] = useState({
@@ -22,6 +23,7 @@ const EditPrompt = () => {
         const getPromptDetails = async () => {
             const response = await fetch(`/api/prompt/${promptId}`);
             const data = await response.json();
+            console.log("API Response:", data)
 
             setPost({
                 prompt: data.prompt,
