@@ -1,5 +1,6 @@
 import { connectToDB } from "@utils/database";
 import Prompt from '@models/prompt';
+import mongoose from "mongoose";
 
 // GET (read)
 
@@ -7,7 +8,9 @@ export const GET = async (request, { params }) => {
     try {
         await connectToDB();
 
-        const prompt = await Prompt.findByid(params._id).populate('creator');
+        const {id} = params;
+
+        const prompt = await Prompt.findById(params.id).populate('creator');
         if (!prompt) return new Response("Prompt not found", { status: 404 })
 
         return new Response(JSON.stringify(prompt), {
@@ -28,7 +31,9 @@ export const PATCH = async (request, { params }) => {
     try {
         await connectToDB();
 
-        const existingPrompt = await Prompt.findById(params._id)
+        const {id} = params;
+
+        const existingPrompt = await Prompt.findById(params.id)
         if (!existingPrompt) return new Response("Prompt not found", { status: 404 })
 
         existingPrompt.prompt = prompt;
@@ -46,9 +51,11 @@ export const PATCH = async (request, { params }) => {
 
 export const DELETE = async (request, { params }) => {
     try {
-        await cibbectToDB();
+        await connectToDB();
 
-        await Prompt.findByIdAndRemove(params._id)
+        const {id} = params;
+
+        await Prompt.findByIdAndRemove(params.id)
 
         return new Response("Prompt deleted successfully", { status: 200 })
     } catch (error) {
