@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useSession } from 'next-auth/react'; // Import useSession
+import { useSession } from 'next-auth/react';
 import Form from '@components/Form';
 
 const EditPrompt = () => {
   const router = useRouter();
-  const { data: session } = useSession(); // Get the session
+  const { data: session } = useSession();
   const searchParams = useSearchParams();
   const promptId = searchParams.get('id');
   console.log("Prompt ID:", promptId);
@@ -20,12 +20,10 @@ const EditPrompt = () => {
 
   useEffect(() => {
     const getPromptDetails = async () => {
-      if (!promptId) return; // Check if promptId exists
+      if (!promptId) return;
 
       try {
         const response = await fetch(`/api/prompt/${promptId}`);
-
-
         const data = await response.json();
         console.log("API Response:", data);
 
@@ -52,11 +50,16 @@ const EditPrompt = () => {
         method: 'PATCH',
         body: JSON.stringify({
           prompt: post.prompt,
-          userId: session?.user.id, // Use session.user.id
+          userId: session?.user.id,
           tag: post.tag,
         }),
       });
 
+      if (response.ok) {
+        router.push('/');
+      } else {
+        throw new Error('Failed to update prompt');
+      }
     } catch (error) {
       console.error("Error updating prompt:", error);
       alert('Failed to update prompt');
@@ -78,4 +81,10 @@ const EditPrompt = () => {
   );
 };
 
-export default EditPrompt;
+export default function EditPromptPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <EditPrompt />
+    </Suspense>
+  );
+}
