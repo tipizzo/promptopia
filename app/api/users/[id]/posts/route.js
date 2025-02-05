@@ -7,10 +7,10 @@ export const GET = async (request, {params}) => {
         await connectToDB()
 
         // Await the params object
-        const {id} = params;
+        const {id} = await params;
 
         const prompts = await Prompt.find({
-            creator: params.id
+            creator: id
         }).populate('creator'); // The populate is used to get the creator's data
 
         return new Response(JSON.stringify(prompts), {
